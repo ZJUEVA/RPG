@@ -6,17 +6,8 @@ import (
 	"golang.org/x/image/font"
 )
 
-type ResourceManager struct {
-}
-
-func (rm *ResourceManager) CachedLoadPicture(path string) (pixel.Picture, error) {
-	return nil, nil
-}
-
-func (rm *ResourceManager) CachedLoadTTF(path string, size float64) (font.Face, error) {
-	return nil, nil
-}
-
-func (rm *ResourceManager) CachedLoadMP3(path string) (beep.Streamer, error) {
-	return nil, nil
+type ResourceManager interface {
+	LoadPicture(path string) (pixel.Picture, error)
+	LoadTTF(path string, size float64) (font.Face, error)
+	LoadMP3(path string) (beep.Streamer, error)
 }

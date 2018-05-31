@@ -1,34 +1,39 @@
 package renderer
 
-import "github.com/faiface/pixel"
+import (
+	"github.com/faiface/pixel"
+)
 
 type BasicPictureRendererComponent struct {
-	ScreenPositionComponent
-	picture *pixel.Picture
+	picture pixel.Picture
 	sprite  *pixel.Sprite
 	rect    pixel.Rect
 }
 
-func (brc *BasicPictureRendererComponent) Picture() *pixel.Picture {
-	return brc.picture
+func (b *BasicPictureRendererComponent) Picture() pixel.Picture {
+	return b.picture
 }
 
-func (brc *BasicPictureRendererComponent) Rect() pixel.Rect {
-	return brc.rect
+func (b *BasicPictureRendererComponent) Rect() pixel.Rect {
+	return b.rect
 }
 
-func (brc *BasicPictureRendererComponent) SetPicture(pic *pixel.Picture) {
-	panic("Not Implemented!")
+func (b *BasicPictureRendererComponent) SetPicture(pic pixel.Picture) {
+	b.picture = pic
+	b.sprite.Set(pic, b.rect)
+
 }
 
-func (brc *BasicPictureRendererComponent) SetRect(rect *pixel.Rect) {
-	panic("Not Implemented!")
+func (b *BasicPictureRendererComponent) SetRect(rect pixel.Rect) {
+	b.rect = rect
+	b.sprite.Set(b.picture, rect)
 }
 
-func (brc *BasicPictureRendererComponent) Draw(target pixel.Target) {
-	panic("Not Implemented!")
+func (b *BasicPictureRendererComponent) GetRenderer() Renderer {
+	return b.sprite
 }
 
-func NewBasicPictureRendererComponent(picture *pixel.Picture, screenX, screenY int, rect *pixel.Rect) *BasicPictureRendererComponent {
-	panic("Not Implemented!")
+func (b *BasicPictureRendererComponent) Init(picture pixel.Picture, rect pixel.Rect) {
+	b.picture = picture
+	b.sprite = pixel.NewSprite(picture, rect)
 }

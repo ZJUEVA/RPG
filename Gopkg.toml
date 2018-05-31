@@ -36,3 +36,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/golang-collections/collections"
+
+[[constraint]]
+  name = "github.com/hnlq715/golang-lru"
+  version = "0.1.0"

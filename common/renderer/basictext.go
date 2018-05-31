@@ -3,34 +3,26 @@ package renderer
 import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/text"
-	"golang.org/x/image/font"
 )
 
 type BasicTextRendererComponent struct {
-	ScreenPositionComponent
-	face *font.Face
-	text *text.Text
+	atlas *text.Atlas
+	text  *text.Text
 }
 
-func (btrc *BasicTextRendererComponent) Face() *font.Face {
-	return btrc.face
-}
-func (btrc *BasicTextRendererComponent) Text() *text.Text {
-	return btrc.text
+func (b *BasicTextRendererComponent) Atlas() *text.Atlas {
+	return b.atlas
 }
 
-func (btrc *BasicTextRendererComponent) Draw(target pixel.Target) {
-	panic("Not Implemented!")
+func (b *BasicTextRendererComponent) Text() *text.Text {
+	return b.text
 }
 
-func NewBasicTextRendererComponent(face *font.Face, screenX, screenY int) *BasicPictureRendererComponent {
-	panic("Not Implemented!")
+func (b *BasicTextRendererComponent) GetRenderer() Renderer {
+	return b.text
 }
 
-type BasicTextRendererSystem struct {
-	target pixel.Target
-}
-
-func (rs *BasicTextRendererSystem) Draw(rc *BasicTextRendererComponent) {
-	panic("Not Implemented!")
+func (b *BasicTextRendererComponent) Init(atlas *text.Atlas) {
+	b.text = text.New(pixel.V(0, 0), atlas)
+	b.atlas = atlas
 }

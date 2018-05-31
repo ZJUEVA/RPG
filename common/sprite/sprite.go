@@ -1,6 +1,10 @@
 package sprite
 
-import "evarpg/common/renderer"
+import (
+	"evarpg/common/renderer"
+
+	"github.com/faiface/pixel"
+)
 
 type SpriteComponent struct {
 	column, row int
@@ -8,49 +12,48 @@ type SpriteComponent struct {
 	changed     bool
 }
 
-func (sc *SpriteComponent) Column() int {
-	return sc.column
+func (s *SpriteComponent) Column() int {
+	return s.column
 }
 
-func (sc *SpriteComponent) Row() int {
-	return sc.row
+func (s *SpriteComponent) Row() int {
+	return s.row
 }
 
-func (sc *SpriteComponent) Index() int {
-	return sc.index
+func (s *SpriteComponent) Index() int {
+	return s.index
 }
 
-func (sc *SpriteComponent) Changed() bool {
-	return sc.changed
+func (s *SpriteComponent) Changed() bool {
+	return s.changed
 }
 
-func (sc *SpriteComponent) SetIndex(index int) {
-	if sc.index != index {
-		sc.index = index
-		sc.changed = true
+func (s *SpriteComponent) SetIndex(index int) {
+	if s.index != index {
+		s.index = index
+		s.changed = true
 	}
 }
-func (sc *SpriteComponent) UnsetChanged() {
-	sc.changed = false
+
+func (s *SpriteComponent) UnsetChanged() {
+	s.changed = false
 }
 
-func NewSpriteComponent(column, row int) *SpriteComponent {
-	panic("Not Implemented!")
+func (s *SpriteComponent) Init(column, row int) {
+	s.column = column
+	s.row = row
+	s.index = 0
+	s.changed = true
 }
 
 type SpriteSystem struct {
-	spriteComponents   []*SpriteComponent
-	rendererComponents []*renderer.BasicPictureRendererComponent
 }
 
-func (ss *SpriteSystem) Add(sc *SpriteComponent, rc *renderer.BasicPictureRendererComponent) {
-	panic("Not Implemented!")
-}
+func (s *SpriteSystem) Update(sprite *SpriteComponent, rc *renderer.BasicPictureRendererComponent) {
+	bound := rc.Picture().Bounds()
+	w, h := bound.W(), bound.H()
+	ry, rx := float64(sprite.Index()/sprite.Column()), float64(sprite.Index()%sprite.Column())
+	cw, ch := w/float64(sprite.Column()), h/float64(sprite.Row())
 
-func (ss *SpriteSystem) Update() {
-	panic("Not Implemented!")
-}
-
-func NewSpriteSystem() *SpriteSystem {
-	panic("Not Implemented!")
+	rc.SetRect(pixel.R(rx*cw, ry*ch, (rx+1)*cw, (ry+1)*ch))
 }

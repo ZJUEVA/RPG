@@ -23,6 +23,15 @@
   revision = "604e922904d35e97f98a774db7881f049cd8d970"
 
 [[projects]]
+  name = "github.com/hnlq715/golang-lru"
+  packages = [
+    ".",
+    "simplelru"
+  ]
+  revision = "518996bc299c9ad2f57c4f6dbe4213c8e12cbfe9"
+  version = "v0.1.0"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/image"
   packages = [
@@ -36,6 +45,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "912fe71c0fea71c82cf23e58977f8809232cf3ef02fe725183ddede20d96e71d"
+  inputs-digest = "48ea106cf0d74f413f87fd55239c6490afeb608b0e3e061eb4c16cb5c6c42aae"
   solver-name = "gps-cdcl"
   solver-version = 1
