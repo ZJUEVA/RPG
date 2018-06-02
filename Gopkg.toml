@@ -27,8 +27,10 @@
 
 [prune]
   go-tests = true
-  unused-packages = true
-
+  [[prune.project]]
+    name = "github.com/go-gl/glfw"
+    non-go = false
+    unused-packages = false
 [[constraint]]
   name = "github.com/faiface/pixel"
   version = "0.7.0"

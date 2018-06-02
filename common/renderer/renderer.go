@@ -4,22 +4,16 @@ import (
 	"github.com/faiface/pixel"
 )
 
-type Renderer interface {
+type Drawer interface {
 	Draw(t pixel.Target, matrix pixel.Matrix)
 }
 
-type RendererComponent interface {
-	GetRenderer() Renderer
+type BasicRendererSystem struct {
+	Target pixel.Target
 }
 
-type CommonRendererSystem struct {
-	target pixel.Target
+func (b *BasicRendererSystem) Init(target pixel.Target) {
+	b.Target = target
 }
 
-func (b *CommonRendererSystem) Draw(r RendererComponent, mat pixel.Matrix) {
-	r.GetRenderer().Draw(b.target, mat)
-}
-
-func (b *CommonRendererSystem) Init(target pixel.Target) {
-	b.target = target
-}
+var DefaultTarget pixel.Target

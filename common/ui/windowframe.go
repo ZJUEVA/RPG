@@ -11,23 +11,30 @@ type WindowFrameComponent struct {
 	changed       bool
 }
 
-func (wfc *WindowFrameComponent) Width() int {
-	return wfc.width
+func (w *WindowFrameComponent) Width() int {
+	return w.width
 }
-func (wfc *WindowFrameComponent) Height() int {
-	return wfc.height
+func (w *WindowFrameComponent) Height() int {
+	return w.height
 }
-func (wfc *WindowFrameComponent) SetWidth(width int) {
+func (w *WindowFrameComponent) SetWidth(width int) {
 	panic("Not implemented!")
 }
-func (wfc *WindowFrameComponent) SetHeight(width int) {
+func (w *WindowFrameComponent) SetHeight(width int) {
 	panic("Not implemented!")
 }
 
 type WindowFrameRendererSystem struct {
-	target pixel.Target
+	renderer.WithBatchPictureRendererSystem
 }
 
-func (rs *WindowFrameRendererSystem) Draw(rc *renderer.BasicPictureRendererComponent, wfc *WindowFrameComponent) {
-	panic("Not Implemented!")
+func (b *WindowFrameRendererSystem) Draw(w *WindowFrameComponent,
+	pic *renderer.WithBatchPictureRendererComponent, matrix pixel.Matrix) {
+
+	b.WithBatchPictureRendererSystem.Draw(pic, matrix)
+	b.DrawAll(pic, pixel.IM)
+}
+
+func (b *WindowFrameRendererSystem) Init(target pixel.Target) {
+	b.WithBatchPictureRendererSystem.Init(target)
 }

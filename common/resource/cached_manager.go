@@ -18,6 +18,9 @@ func (c *CachedResourceManager) LoadPicture(path string) (pixel.Picture, error) 
 		img, err = loadPicture(path)
 		c.pictureCache.Add(path, img)
 	}
+	if err != nil {
+		panic(err)
+	}
 	return img.(pixel.Picture), err
 }
 
@@ -27,4 +30,8 @@ func (c *CachedResourceManager) LoadTTF(path string, size float64) (font.Face, e
 
 func (c *CachedResourceManager) LoadMP3(path string) (beep.Streamer, error) {
 	return nil, nil
+}
+
+func (c *CachedResourceManager) Init() {
+	c.pictureCache, _ = lru.NewARC(100)
 }

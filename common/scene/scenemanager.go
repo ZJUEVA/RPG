@@ -1,28 +1,34 @@
 package scene
 
-import "github.com/golang-collections/collections/stack"
+import (
+	"github.com/golang-collections/collections/stack"
+)
 
+//GOMAXPROCS
 type SceneManager struct {
 	stack stack.Stack
 	now   Scene
 }
 
-func (sm *SceneManager) Push(scene Scene) {
-	panic("Not Implemented!")
+func (s *SceneManager) Push(scene Scene) {
+	s.stack.Push(s.now)
+	s.now = scene
+	s.now.Enter(s)
 }
 
-func (sm *SceneManager) Goto(scene Scene) {
-	panic("Not Implemented!")
+func (s *SceneManager) Goto(scene Scene) {
+	s.now = scene
+	s.now.Enter(s)
 }
 
-func (sm *SceneManager) Pop() {
-	panic("Not Implemented!")
+func (s *SceneManager) Pop() {
+	s.now = s.stack.Pop().(Scene)
 }
 
-func (sm *SceneManager) Loop() {
-	panic("Not Implemented!")
-}
-
-func NewSceneManager() *SceneManager {
-	panic("Not Implemented!")
+func (s *SceneManager) Update() {
+	current_scene := s.now
+	current_scene.Update()
+	if current_scene != s.now {
+		current_scene.Leave()
+	}
 }

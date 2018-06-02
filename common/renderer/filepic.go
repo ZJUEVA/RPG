@@ -37,7 +37,7 @@ type FilepathPictureSystem struct {
 }
 
 func (f *FilepathPictureSystem) Update(fc *FilepathPictureComponent,
-	rc *BasicPictureRendererComponent) {
+	rc PictureSetterComponent) {
 
 	if fc.Changed() {
 		fc.UnsetChanged()

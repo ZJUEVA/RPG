@@ -8,13 +8,44 @@
   revision = "4ec0906f41871d561558e3e0643f71fb8bf08885"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/faiface/glhf"
+  packages = ["."]
+  revision = "98c0391c0fd3f0b365cfe5d467ac162b79dfb002"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/faiface/mainthread"
+  packages = ["."]
+  revision = "8b78f0a41ae388189090ac4506612659fa53082b"
+
+[[projects]]
   name = "github.com/faiface/pixel"
   packages = [
     ".",
+    "pixelgl",
     "text"
   ]
   revision = "2d9a739e406f1f7093747c599d844e50c6e92d0e"
   version = "v0.7"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/go-gl/gl"
+  packages = ["v3.3-core/gl"]
+  revision = "68e2537930806bfcee1b92a0e14b4e9b8bb3a3e3"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/go-gl/glfw"
+  packages = ["v3.2/glfw"]
+  revision = "46a8d530c3268b31eeb1310f30fe42be1cae98f2"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/go-gl/mathgl"
+  packages = ["mgl32"]
+  revision = "5ab0e04e1f55a10f3a71b1fccc60ca2ee9a0bc02"
 
 [[projects]]
   branch = "master"
@@ -32,19 +63,36 @@
   version = "v0.1.0"
 
 [[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/image"
   packages = [
+    "colornames",
     "font",
     "font/basicfont",
     "font/plan9font",
+    "math/f32",
     "math/fixed"
   ]
   revision = "f315e440302883054d0c2bd85486878cb4f8572c"
 
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/net"
+  packages = [
+    "html",
+    "html/atom"
+  ]
+  revision = "1e491301e022f8f977054da4c2d852decd59571f"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "48ea106cf0d74f413f87fd55239c6490afeb608b0e3e061eb4c16cb5c6c42aae"
+  inputs-digest = "7c9a7c30f3aa2ea89776208143058a75a757cf10279629db04138ba6e1e50ed6"
   solver-name = "gps-cdcl"
   solver-version = 1

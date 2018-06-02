@@ -4,6 +4,10 @@ import (
 	"github.com/faiface/pixel"
 )
 
+type PictureSetterComponent interface {
+	SetPicture(pic pixel.Picture)
+}
+
 type BasicPictureRendererComponent struct {
 	picture pixel.Picture
 	sprite  *pixel.Sprite
@@ -20,8 +24,12 @@ func (b *BasicPictureRendererComponent) Rect() pixel.Rect {
 
 func (b *BasicPictureRendererComponent) SetPicture(pic pixel.Picture) {
 	b.picture = pic
-	b.sprite.Set(pic, b.rect)
+	if b.sprite == nil {
+		b.rect = b.picture.Bounds()
+		b.sprite = pixel.NewSprite(b.picture, b.rect)
+	}
 
+	b.sprite.Set(pic, b.rect)
 }
 
 func (b *BasicPictureRendererComponent) SetRect(rect pixel.Rect) {
@@ -29,11 +37,43 @@ func (b *BasicPictureRendererComponent) SetRect(rect pixel.Rect) {
 	b.sprite.Set(b.picture, rect)
 }
 
-func (b *BasicPictureRendererComponent) GetRenderer() Renderer {
-	return b.sprite
+type BasicPictureRendererSystem struct {
+	BasicRendererSystem
 }
 
-func (b *BasicPictureRendererComponent) Init(picture pixel.Picture, rect pixel.Rect) {
-	b.picture = picture
-	b.sprite = pixel.NewSprite(picture, rect)
+func (b *BasicPictureRendererSystem) Draw(pic *BasicPictureRendererComponent, matrix pixel.Matrix) {
+	if pic.sprite != nil {
+		pic.sprite.Draw(b.Target, matrix)
+	}
+}
+
+type WithBatchPictureRendererComponent struct {
+	BasicPictureRendererComponent
+	batch *pixel.Batch
+}
+
+func (b *WithBatchPictureRendererComponent) Batch() *pixel.Batch {
+	return b.batch
+}
+
+func (b *WithBatchPictureRendererComponent) SetPicture(pic pixel.Picture) {
+	if pic != b.picture {
+		b.batch = pixel.NewBatch(&pixel.TrianglesData{}, pic)
+		b.BasicPictureRendererComponent.SetPicture(pic)
+	}
+}
+
+type WithBatchPictureRendererSystem struct {
+	BasicRendererSystem
+}
+
+func (b *WithBatchPictureRendererSystem) Draw(pic *WithBatchPictureRendererComponent, matrix pixel.Matrix) {
+	if pic.sprite != nil && pic.batch != nil {
+		pic.sprite.Draw(pic.batch, matrix)
+	}
+}
+func (b *WithBatchPictureRendererSystem) DrawAll(pic *WithBatchPictureRendererComponent, matrix pixel.Matrix) {
+	if pic.batch != nil {
+		pic.batch.Draw(b.Target)
+	}
 }

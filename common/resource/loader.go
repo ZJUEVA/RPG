@@ -4,6 +4,8 @@ import (
 	"image"
 	"os"
 
+	_ "image/png"
+
 	"github.com/faiface/beep"
 	"github.com/faiface/pixel"
 	"golang.org/x/image/font"
