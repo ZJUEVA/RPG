@@ -8,7 +8,6 @@ import (
 	"evarpg/common/utils"
 	"evarpg/submodule/title"
 	"fmt"
-	"image/color"
 	"time"
 
 	"github.com/faiface/pixel"
@@ -41,7 +40,7 @@ func run() {
 	renderer.DefaultTarget = buffer
 	manager.Goto(&title.Scene{})
 
-	fps := time.Tick(time.Second / 60)
+	fps := time.Tick(time.Second / 50)
 	frames := 0
 	second := time.Tick(time.Second)
 
@@ -52,7 +51,7 @@ func run() {
 		buffer.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
 
 		win.Update()
-		buffer.Clear(color.RGBA{0, 0, 0, 255})
+		buffer.Clear(colornames.Skyblue)
 		<-fps
 		updateFPSDisplay(win, &cfg, &frames, second)
 
