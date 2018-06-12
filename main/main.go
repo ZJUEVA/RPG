@@ -38,6 +38,7 @@ func run() {
 	win.Clear(colornames.Skyblue)
 	buffer := pixelgl.NewCanvas(win.Bounds())
 	renderer.DefaultTarget = buffer
+	manager.Init()
 	manager.Goto(&title.Scene{})
 
 	fps := time.Tick(time.Second / 50)

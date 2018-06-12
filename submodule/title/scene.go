@@ -18,45 +18,66 @@ type AFrameEntity struct {
 }
 
 type Scene struct {
-	frame_renderer ui.WindowFrameRendererSystem
-	entity         AFrameEntity
-	entity2        AFrameEntity
-	entity3        AFrameEntity
 }
 
-func (s *Scene) Enter(manager *scene.SceneManager) {
-	s.frame_renderer.Init(renderer.DefaultTarget)
+func (s *Scene) Main(manager *scene.SceneManager) {
+	var frame_renderer ui.WindowFrameRendererSystem
+	frame_renderer.Init(renderer.DefaultTarget)
 
-	s.entity = AFrameEntity{Identity: ecs.NewIdentity()}
-	s.entity.SetWidth(600)
-	s.entity.SetHeight(200)
-	s.entity.FilepathPictureComponent.SetFilename("assets/images/windowskin/WindowSkin1.png")
+	entity := AFrameEntity{Identity: ecs.NewIdentity()}
+	entity.SetWidth(600)
+	entity.SetHeight(200)
+	entity.FilepathPictureComponent.SetFilename("assets/images/windowskin/WindowSkin1.png")
 
-	s.entity2 = AFrameEntity{Identity: ecs.NewIdentity()}
-	s.entity2.SetWidth(300)
-	s.entity2.SetHeight(200)
-	s.entity2.FilepathPictureComponent.SetFilename("assets/images/windowskin/WindowSkin.png")
+	entity2 := AFrameEntity{Identity: ecs.NewIdentity()}
+	entity2.SetWidth(300)
+	entity2.SetHeight(200)
+	entity2.FilepathPictureComponent.SetFilename("assets/images/windowskin/WindowSkin.png")
 
-	s.entity3 = AFrameEntity{Identity: ecs.NewIdentity()}
-	s.entity3.SetWidth(100)
-	s.entity3.SetHeight(200)
-	s.entity3.FilepathPictureComponent.SetFilename("assets/images/windowskin/WindowSkin3.png")
-	s.frame_renderer.Init(renderer.DefaultTarget)
+	frame_renderer.Init(renderer.DefaultTarget)
+	i := 0
+	for {
+		manager.Lock()
+		utils.FilepathPictureSystem.Update(&entity.FilepathPictureComponent, &entity.WithBatchPictureRendererComponent)
+		frame_renderer.Draw(&entity.WindowFrameComponent,
+			&entity.WithBatchPictureRendererComponent,
+			pixel.IM.Moved(pixel.V(100, 100)))
+		utils.FilepathPictureSystem.Update(&entity2.FilepathPictureComponent, &entity2.WithBatchPictureRendererComponent)
+		frame_renderer.Draw(&entity2.WindowFrameComponent,
+			&entity2.WithBatchPictureRendererComponent,
+			pixel.IM.Moved(pixel.V(300, 200)))
+		i++
+		if i > 200 {
+			manager.Goto(&Scene2{})
+			manager.Yield()
+			break
+		}
+		manager.Yield()
+
+	}
 }
-func (s *Scene) Update() {
-	utils.FilepathPictureSystem.Update(&s.entity.FilepathPictureComponent, &s.entity.WithBatchPictureRendererComponent)
-	s.frame_renderer.Draw(&s.entity.WindowFrameComponent,
-		&s.entity.WithBatchPictureRendererComponent,
-		pixel.IM.Moved(pixel.V(100, 100)))
-	utils.FilepathPictureSystem.Update(&s.entity2.FilepathPictureComponent, &s.entity2.WithBatchPictureRendererComponent)
-	s.frame_renderer.Draw(&s.entity2.WindowFrameComponent,
-		&s.entity2.WithBatchPictureRendererComponent,
-		pixel.IM.Moved(pixel.V(300, 200)))
-	utils.FilepathPictureSystem.Update(&s.entity3.FilepathPictureComponent, &s.entity3.WithBatchPictureRendererComponent)
-	s.frame_renderer.Draw(&s.entity3.WindowFrameComponent,
-		&s.entity3.WithBatchPictureRendererComponent,
-		pixel.IM.Moved(pixel.V(10, 400)))
-}
-func (s *Scene) Leave() {
 
+type Scene2 struct {
+}
+
+func (s *Scene2) Main(manager *scene.SceneManager) {
+	var frame_renderer ui.WindowFrameRendererSystem
+	frame_renderer.Init(renderer.DefaultTarget)
+
+	entity := AFrameEntity{Identity: ecs.NewIdentity()}
+	entity.SetWidth(100)
+	entity.SetHeight(200)
+	entity.FilepathPictureComponent.SetFilename("assets/images/windowskin/WindowSkin1.png")
+
+	frame_renderer.Init(renderer.DefaultTarget)
+
+	for {
+		manager.Lock()
+		utils.FilepathPictureSystem.Update(&entity.FilepathPictureComponent, &entity.WithBatchPictureRendererComponent)
+		frame_renderer.Draw(&entity.WindowFrameComponent,
+			&entity.WithBatchPictureRendererComponent,
+			pixel.IM.Moved(pixel.V(100, 100)))
+
+		manager.Yield()
+	}
 }

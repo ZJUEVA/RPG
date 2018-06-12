@@ -8,27 +8,39 @@ import (
 type SceneManager struct {
 	stack stack.Stack
 	now   Scene
+	old   Scene
+	ch    chan bool
+	ch2   chan bool
 }
 
 func (s *SceneManager) Push(scene Scene) {
 	s.stack.Push(s.now)
 	s.now = scene
-	s.now.Enter(s)
 }
 
 func (s *SceneManager) Goto(scene Scene) {
 	s.now = scene
-	s.now.Enter(s)
 }
 
 func (s *SceneManager) Pop() {
 	s.now = s.stack.Pop().(Scene)
 }
-
+func (s *SceneManager) Lock() {
+	<-s.ch
+}
+func (s *SceneManager) Yield() {
+	<-s.ch
+}
 func (s *SceneManager) Update() {
-	current_scene := s.now
-	current_scene.Update()
-	if current_scene != s.now {
-		current_scene.Leave()
+
+	if s.old != s.now {
+		go s.now.Main(s)
+		s.old = s.now
 	}
+	s.ch <- true
+	s.ch <- true
+}
+
+func (s *SceneManager) Init() {
+	s.ch = make(chan bool)
 }
